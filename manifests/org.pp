@@ -1,14 +1,14 @@
 #
-# Class mongodb::10gen 
+# Class mongodb::org 
 #
-class mongodb::10gen {
+class mongodb::org {
   if ($osfamily == 'RedHat' or $operatingsystem == 'Amazon') {
-    yumrepo { '10gen':
+    yumrepo { 'org':
       baseurl        => "http://downloads-distro.mongodb.org/repo/redhat/os/$architecture",
       failovermethod => 'priority',
       enabled        => '1',
       gpgcheck       => '0',
-      descr          => '10gen Repository',
+      descr          => 'org Repository',
       notify         => Exec['yum-check-update-mongo'],
     }
    
@@ -23,10 +23,10 @@ class mongodb::10gen {
   } elsif ($osfamily == 'Debian') {
     case $::operatingsystem {
       'Debian': { 
-        $source = 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' 
+        $source = 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist org' 
       }
       'Ubuntu': { 
-        $source = 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' 
+        $source = 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist org' 
       }
     }
 
@@ -34,14 +34,14 @@ class mongodb::10gen {
       command   => 'apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10',
       path      => '/bin:/usr/bin:/usr/local/bin',
       logoutput => true,
-      unless    => 'apt-key list | grep 10gen',
+      unless    => 'apt-key list | grep org',
     }
     
     exec { 'apt-source-mongo':
-      command   => "echo \"${source}\" > /etc/apt/sources.list.d/10gen.list",
+      command   => "echo \"${source}\" > /etc/apt/sources.list.d/org.list",
       path      => '/bin:/usr/bin:/usr/local/bin',
       logoutput => true,
-      unless    => 'cat /etc/apt/sources.list | grep 10gen',
+      unless    => 'cat /etc/apt/sources.list | grep org',
       require   => Exec['apt-key-mongo'],
     }
     

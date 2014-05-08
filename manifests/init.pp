@@ -15,7 +15,7 @@ class mongodb(
 ) {
   
   include 'mongodb::params'
-  include 'mongodb::10gen'
+  include 'mongodb::org'
   
   Class['mongodb'] -> Class['mongodb::config']
 
@@ -38,7 +38,7 @@ class mongodb(
   if $version != 'latest' {
     case $::operatingsystem {
       /(Amazon|CentOS|Fedora|RedHat)/: {
-        $mongodb_version = "${version}-mongodb_1"
+        $mongodb_version = "${version}"
       }
       /(Debian|Ubuntu)/: {
         $mongodb_version = "${version}"
@@ -48,15 +48,15 @@ class mongodb(
     $mongodb_version = latest
   }
 
-  package { $mongodb::params::mongo_10gen :
+  package { $mongodb::params::mongo_org :
     ensure  => "${mongodb_version}",
-    require => Class['mongodb::10gen'],
+    require => Class['mongodb::org'],
   }
   
-  if $mongodb::params::mongo_10gen_server {
-    package { $mongodb::params::mongo_10gen_server :
+  if $mongodb::params::mongo_org_server {
+    package { $mongodb::params::mongo_org_server :
       ensure  => "${mongodb_version}",
-      require => Class['mongodb::10gen'],
+      require => Class['mongodb::org'],
     }
   }
 
@@ -64,6 +64,6 @@ class mongodb(
     ensure     => running,
     name       => $mongodb::params::mongo_service,
     enable     => true,
-    require    => Package[$mongodb::params::mongo_10gen],
+    require    => Package[$mongodb::params::mongo_org],
   }
 }

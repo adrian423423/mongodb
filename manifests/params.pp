@@ -5,8 +5,8 @@ class mongodb::params() {
   
   case $::operatingsystem {
     /(Amazon|CentOS|Fedora|RedHat)/: {
-      $mongo_10gen        = 'mongo-10gen'
-      $mongo_10gen_server = 'mongo-10gen-server'
+      $mongo_org        = 'mongodb-org'
+      $mongo_org_server = 'mongodb-org-server'
       $mongo_user         = 'mongod'
       $mongo_service      = 'mongod'
       $mongo_config       = 'mongod.conf'
@@ -14,8 +14,8 @@ class mongodb::params() {
       $mongo_path         = '/var/lib/mongo'
     }
     /(Debian|Ubuntu)/: {
-      $mongo_10gen        = 'mongodb-10gen'
-      $mongo_10gen_server = undef
+      $mongo_org        = 'mongodb-org'
+      $mongo_org_server = undef
       $mongo_user         = 'mongodb'
       $mongo_service      = 'mongodb'
       $mongo_config       = 'mongodb.conf'
